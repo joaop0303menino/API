@@ -1,26 +1,23 @@
 from flask import Flask
+from User import Users
+from Contacts import Contacts
 
-app = Flask(__name__)
+class App:
+    def __init__(self):
+        self.app = Flask(__name__)
+        self.register_blueprints()
 
-@app.route("/task", methods=["GET"])
-def GET_all_task():
-    return "GET: Task"
+        @self.app.route("/")
+        def home():
+            return "Welcome to the API"
 
-@app.route("/task/<int:id>", methods=["GET"])
-def GET_task(id):
-    return "GET: Task"
+    def register_blueprints(self):
+        self.app.register_blueprint(Users().get_blueprint())
+        self.app.register_blueprint(Contacts().get_blueprint())
 
-@app.route("/task", methods=["POST"])
-def POST_task():
-    return "POST: Task"
-
-@app.route("/task/<int:id>", methods=["PUT"])
-def PUT_task(id):
-    return "PUT: Task"
-
-@app.route("/task/<int:id>", methods=["DELETE"])
-def DELETE_task(id):
-    return "DELETE: Task"
+    def run(self):
+        self.app.run(debug=True)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    application = App()
+    application.run()
